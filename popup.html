@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tab Manager</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="popup">
+    <h1>Tab Manager</h1>
+
+    <label class="sr-only" for="search">Search tabs</label>
+    <input id="search" type="search" placeholder="Search tabs..." autocomplete="off">
+
+    <section aria-labelledby="tabs-heading">
+      <h2 id="tabs-heading">Open Tabs</h2>
+      <div id="tab-list" class="tab-list" role="list" aria-live="polite"></div>
+    </section>
+
+    <hr>
+
+    <section aria-labelledby="sessions-heading">
+      <h2 id="sessions-heading">Save Session</h2>
+      <div class="session-controls">
+        <label class="sr-only" for="session-name">Session name</label>
+        <input id="session-name" type="text" placeholder="Session name" autocomplete="off">
+        <button id="save-session" type="button">Save Current Tabs</button>
+      </div>
+
+      <div id="session-list" class="session-list" role="list" aria-live="polite"></div>
+    </section>
+  </main>
+</body>
+</html>
