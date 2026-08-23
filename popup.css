@@ -248,6 +248,13 @@ hr {
   background: var(--surface-hover);
 }
 
+.tab-checkbox {
+  flex: 0 0 auto;
+  margin: 0 2px 0 0;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
 .tab-favicon {
   flex: 0 0 16px;
   width: 16px;

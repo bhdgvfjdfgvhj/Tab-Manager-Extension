@@ -33,6 +33,15 @@ function renderTabs(tabs){
             const row = document.createElement("div");
             row.className = "tab-row";
 
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "tab-checkbox";
+            checkbox.checked = true;
+            checkbox.dataset.url = tab.url;
+            checkbox.addEventListener("click", (e) => {
+                e.stopPropagation();
+            });
+
           const favicon = document.createElement("img");
           favicon.className = "tab-favicon";
           favicon.src = tab.favIconUrl || "";
@@ -60,6 +69,7 @@ function renderTabs(tabs){
                 chrome.windows.update(tab.windowId, { focused: true });
             });
 
+            row.appendChild(checkbox);
             row.appendChild(favicon);
             row.appendChild(title);
             row.appendChild(closeBtn);
@@ -93,15 +103,16 @@ document.getElementById("save-session").addEventListener("click", () => {
 
   if (!sessionName) return; // don't save unnamed sessions
 
-  chrome.tabs.query({ currentWindow: true }, (tabs) => {
-    const urls = tabs.map((tab) => tab.url);
+  const urls = Array.from(document.querySelectorAll(".tab-checkbox:checked"))
+    .map((checkbox) => checkbox.dataset.url);
 
-    chrome.storage.local.get({ sessions: {} }, (data) => {
-      data.sessions[sessionName] = urls;
-      chrome.storage.local.set({ sessions: data.sessions }, () => {
-        nameInput.value = ""; // clear input
-        loadSessions(); // refresh the saved-sessions list
-      });
+  if (!urls.length) return;
+
+  chrome.storage.local.get({ sessions: {} }, (data) => {
+    data.sessions[sessionName] = urls;
+    chrome.storage.local.set({ sessions: data.sessions }, () => {
+      nameInput.value = ""; // clear input
+      loadSessions(); // refresh the saved-sessions list
     });
   });
 });
