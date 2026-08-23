@@ -234,6 +234,46 @@ hr {
   margin-top: 3px;
 }
 
+.session-url-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 8px 4px 24px;
+  color: var(--muted-text);
+  cursor: pointer;
+}
+
+.session-url-row:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.session-url-row span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove-url-btn {
+  flex: 0 0 22px;
+  width: 22px;
+  min-height: 22px;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted-text);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.remove-url-btn:hover,
+.remove-url-btn:focus-visible {
+  color: var(--danger);
+}
+
 .tab-row {
   display: flex;
   align-items: center;

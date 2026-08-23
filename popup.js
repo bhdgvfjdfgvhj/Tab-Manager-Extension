@@ -189,12 +189,18 @@ function loadSessions() {
         urlLabel.textContent = getDomain(url) || url;
         urlLabel.title = url;
 
+        urlRow.addEventListener("click", () => {
+          chrome.tabs.create({ url });
+        });
+
         const removeUrlBtn = document.createElement("button");
         removeUrlBtn.type = "button";
         removeUrlBtn.className = "remove-url-btn";
         removeUrlBtn.textContent = "×";
         removeUrlBtn.setAttribute("aria-label", `Remove ${url}`);
-        removeUrlBtn.addEventListener("click", () => {
+        removeUrlBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+
           chrome.storage.local.get({ sessions: {} }, (latestData) => {
             const sessionUrls = latestData.sessions[name] || [];
             sessionUrls.splice(index, 1);
@@ -207,7 +213,24 @@ function loadSessions() {
 
             chrome.storage.local.set(
               { sessions: latestData.sessions },
-              loadSessions
+              () => {
+                chrome.tabs.query({ currentWindow: true }, (tabs) => {
+                  const matchingTabIds = tabs
+                    .filter((tab) => tab.url === url)
+                    .map((tab) => tab.id);
+
+                  const refreshLists = () => {
+                    loadSessions();
+                    loadTabs();
+                  };
+
+                  if (matchingTabIds.length) {
+                    chrome.tabs.remove(matchingTabIds, refreshLists);
+                  } else {
+                    refreshLists();
+                  }
+                });
+              }
             );
           });
         });
